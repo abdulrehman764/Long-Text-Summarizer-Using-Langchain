@@ -1,32 +1,45 @@
-# Meeting Summarizer Lambda
+# Meeting Transcript Summarization and Agenda Extraction
 
-This Lambda function extracts agenda items and generates a summary for meeting transcripts.
+## Overview
 
-## Description
+This repository contains a Python AWS Lambda function that facilitates efficient summarization of meeting transcripts and extraction of key agenda items. The code leverages the following technologies and techniques:
 
-This Lambda function is designed to be triggered by events such as the upload of meeting data to an S3 bucket. It extracts agenda items from JSON data, processes meeting transcripts, and generates a detailed summary using language generation models provided by the Bedrock API.
+- BeautifulSoup: For parsing HTML content within agenda items.
+- LangChain: To streamline interaction with large language models and build powerful text processing chains.
+- Bedrock LLM: A powerful language model from AI21 Labs (accessed via the Bedrock runtime client) is employed for text summarization.
 
-## Features
+## Functionality
 
-- Extracts agenda items from JSON data
-- Processes meeting transcripts
-- Generates a detailed summary using language generation models
-- Uploads the summary to an S3 bucket
+- Agenda Extraction: Parses meeting data (JSON format) to extract agenda items and creates a clearly formatted agenda string.
+- Transcript Processing: Splits the meeting transcript into manageable text chunks for downstream processing.
+- Text Summarization: Utilizes a state-of-the-art LLM (Bedrock) through LangChain to intelligently summarize the meeting transcript.
 
-## Installation
+## Prerequisites
 
-1. Clone this repository to your local machine.
-2. Install the required dependencies as lambda layers using https://github.com/abdulrehman764/Lambda-Layer-Generator.
-3. Set up your AWS credentials for Boto3.
+- AWS account with permissions to create Lambda functions and S3 buckets.
+- An API key or access credentials to use the Bedrock LLM (if you choose this LLM).
 
 ## Usage
 
-1. Ensure that your meeting data is in the correct format and stored in an S3 bucket.
-2. Trigger the Lambda function manually or by configuring an event source, such as an S3 bucket upload event.
+1. Clone this repository.
+2. Create an AWS Lambda function and upload the provided code.
+3. Configure an S3 trigger to invoke the Lambda function whenever a meeting transcript JSON file is uploaded to a designated bucket.
+4. The summarized text and the extracted agenda will be available in a designated destination S3 bucket.
 
-## Configuration
+## Customization
 
-- Ensure that your AWS credentials are correctly configured.
-- Modify the `lambda_handler` function to handle different types of events or customize the processing logic as needed.
-- Adjust the parameters of the language generation models according to your requirements.
+- Experiment with other LLMs supported by LangChain for text summarization.
+- Modify agenda formatting as needed.
 
+## Example Input (JSON)
+
+```json
+{
+  "transcript": "Long meeting transcript text...",
+  "agenda_items": [
+    {
+      "item_number": 1,
+      "content": "<p>Discussion of project status</p>"
+    }
+  ]
+}
